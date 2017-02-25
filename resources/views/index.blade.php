@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('title')
-    <title>UolSports</title>
+    <title>UOLSports</title>
 @endsection
 
 @section('content')
