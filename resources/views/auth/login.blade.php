@@ -9,14 +9,20 @@
 @section('content')
     <div class="auth col-xs-12 col-sm-12 col-md-8 col-lg-5">
         <form action="/login" method="POST">
-            <div class="form-group">
+            <div class="form-group @if($errors->has('email')) has-error @endif">
                 <label for="email">Email Address</label>
-                <input type="email" class="form-control" name="email" placeholder="Email Address" required>
+                <input type="text" class="form-control" name="email" placeholder="Email Address">
+                @if($errors->has('email'))
+                    {{$errors->first('email')}}
+                @endif
             </div>
 
-            <div class="form-group">
+            <div class="form-group @if($errors->has('password')) has-error @endif">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" name="password" placeholder="Password" required>
+                <input type="password" class="form-control" name="password" placeholder="Password">
+                @if($errors->has('password'))
+                {{$errors->first('password')}}
+                @endif
             </div>
 
             @if(Session::has('message'))
