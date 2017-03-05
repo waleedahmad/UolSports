@@ -1,0 +1,64 @@
+.admin{
+  padding-top: 50px;
+  height: 100%;
+  overflow: auto;
+  color:white;
+
+  .sidebar{
+    padding: 0px;
+    min-height: 100%;
+    height: auto;
+    background-color : white;
+
+    .links{
+      list-style: none;
+      padding: 0px;
+      margin: 0px;
+
+      li{
+        display: block;
+
+        a{
+          text-decoration: none;
+          display: block;
+          color:black;
+          font-size: 16px;
+          padding: 20px;
+        }
+
+        :hover{
+          background-color: #85bf25;
+          color:white;
+        }
+
+        &.active{
+          background-color: #85bf25;
+          color:white;
+        }
+      }
+    }
+  }
+
+
+  .content{
+    height: 500px;
+
+    .title{
+      border-bottom: 1px solid white;
+      padding-bottom: 10px;
+    }
+
+    .requests{
+      table{
+        .image-holder{
+          width: 75px;
+          height: 75px;
+          overflow:hidden;
+          img{
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

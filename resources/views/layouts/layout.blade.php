@@ -11,9 +11,7 @@
 </head>
 <body>
     @include('layouts.navbar')
-    <div class="container">
-        @yield('content')
-    </div>
+    @yield('content')
 
     <script src="/lib/jquery/dist/jquery.min.js"></script>
     <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>

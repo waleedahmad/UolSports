@@ -5,6 +5,16 @@ html,body{
   width: 100%;
 }
 
-.container{
-  @import "imports/auth";
+body{
+  background-color: #212425;
 }
+
+.navbar{
+  background-color:white;
+  border-radius: 0px;
+  margin: 0px;
+}
+
+
+@import "imports/auth";
+@import "imports/admin";

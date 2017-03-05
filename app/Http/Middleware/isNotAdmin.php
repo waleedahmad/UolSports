@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class isNotAdmin
 {
@@ -15,7 +16,9 @@ class isNotAdmin
      */
     public function handle($request, Closure $next)
     {
-
+        if(Auth::user()->type === 'user'){
+            return redirect('/');
+        }
         return $next($request);
     }
 }

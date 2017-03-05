@@ -29,6 +29,15 @@ class AuthController extends Controller
     }
 
     /**
+     * Logout authenticated user
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function logout(){
+        Auth::logout();
+        return redirect('/');
+    }
+
+    /**
      * Register a new user
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
@@ -38,6 +47,7 @@ class AuthController extends Controller
             'name'  => 'required',
             'email' =>  'required|email|unique:users',
             'password'  =>  'required|min:6',
+            'gender'    =>  'required',
             'confirm_password'  =>  'required|same:password',
         ];
 
@@ -67,8 +77,9 @@ class AuthController extends Controller
         $user->password = bcrypt($input->password);
         $user->registration_id = '';
         $user->verified = 0;
-        $user->image_uri = '';
+        $user->image_uri = 'default/img/default_img_male.jpg';
         $user->card_uri = '';
+        $user->gender = $input->gender;
         $user->type = 'user';
         return $user->save();
     }
@@ -116,7 +127,7 @@ class AuthController extends Controller
 
     public function processVerification(Request $request){
         $rules = [
-            'registration_id'   =>  'required|min:11|max:11|unique:users,registration_id',
+            'registration_id'   =>  'required|min:11|max:11|unique:users,registration_id|roll_no',
             'id_card'   =>  'required|file|mimes:jpg,jpeg,png'
         ];
 

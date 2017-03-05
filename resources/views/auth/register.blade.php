@@ -11,7 +11,7 @@
         <form action="/register" method="POST">
             <div class="form-group @if($errors->has('name')) has-error @endif" >
                 <label for="name">Name</label>
-                <input type="text" class="form-control" name="name" placeholder="Your Name" >
+                <input type="text" class="form-control" name="name" placeholder="Your Name" value="{{old('name')}}">
                 @if($errors->has('name'))
                     {{$errors->first('name')}}
                 @endif
@@ -19,11 +19,25 @@
 
             <div class="form-group @if($errors->has('email')) has-error @endif">
                 <label for="email">Email Address</label>
-                <input type="email" class="form-control" name="email" placeholder="Email Address" >
+                <input type="email" class="form-control" name="email" placeholder="Email Address" value="{{old('email')}}">
                 @if($errors->has('email'))
                     {{$errors->first('email')}}
                 @endif
             </div>
+
+            <div class="form-group @if($errors->has('gender')) has-error @endif">
+                <label for="email">Gender</label>
+                <select name="gender" class="form-control">
+                    <option value="">Select</option>
+                    <option value="male" @if(old('gender') === 'male') selected @endif>Male</option>
+                    <option value="female"  @if(old('gender') === 'female') selected @endif>Female</option>
+                </select>
+                @if($errors->has('gender'))
+                    {{$errors->first('gender')}}
+                @endif
+            </div>
+
+
 
             <div class="form-group @if($errors->has('password')) has-error @endif">
                 <label for="password">Password</label>
