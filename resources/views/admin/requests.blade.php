@@ -9,13 +9,14 @@
         @include('admin.sidebar')
 
         <div class="content col-xs-12 col-sm-9 col-md-9 col-lg-10">
-            <h3 class="title">
-                Verification Requests
-            </h3>
+            <div class="page-header">
+                <h3>Verification Requests</h3>
+            </div>
 
-            <div class="requests col-xs-8">
-                <table class="table">
-                    <thead>
+            @if($requests->count())
+                <div class="requests col-xs-8">
+                    <table class="table">
+                        <thead>
                         <th>
                             Card
                         </th>
@@ -35,11 +36,11 @@
                         <th>
                             Actions
                         </th>
-                    </thead>
+                        </thead>
 
-                    <tbody>
+                        <tbody>
                         @foreach($requests as $request)
-                            <tr>
+                            <tr class="request">
                                 <td>
                                     <a target="_blank" href="/storage/{{$request->card_uri}}">
                                         <div class="image-holder">
@@ -61,15 +62,18 @@
                                 </td>
 
                                 <td>
-                                    <button class="btn btn-sm btn-default verify-user">Accept</button>
+                                    <button class="btn btn-default approve-user" data-id="{{$request->id}}">Accept</button>
 
-                                    <button class="btn btn-sm btn-danger disapprove-user">Disapprove</button>
+                                    <button class="btn btn-danger disapprove-user" data-id="{{$request->id}}">Disapprove</button>
                                 </td>
                             </tr>
                         @endforeach
-                    </tbody>
-                </table>
-            </div>
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                No verification requests found.
+            @endif
         </div>
     </div>
 @endsection

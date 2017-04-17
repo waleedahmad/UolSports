@@ -95,7 +95,7 @@ class AuthController extends Controller
             if(Auth::attempt([
                 'email' =>  $request->email,
                 'password'  =>  $request->password
-            ])){
+            ], true)){
                 return redirect('/');
             }else{
                 $request->session()->flash('message', 'Incorrect email or password');
@@ -125,6 +125,11 @@ class AuthController extends Controller
         return view('auth.verification');
     }
 
+    /**
+     * Process verification request
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function processVerification(Request $request){
         $rules = [
             'registration_id'   =>  'required|min:11|max:11|unique:users,registration_id|roll_no',
@@ -148,6 +153,11 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Create new verification request
+     * @param Request $request
+     * @return bool
+     */
     private function createVerificationRequest(Request $request){
 
         $file = $request->file('id_card');
@@ -167,10 +177,21 @@ class AuthController extends Controller
         return false;
     }
 
+    /**
+     * Check if verification request exist
+     * @param $id
+     * @return mixed
+     */
     private function verificationRequestExist($id){
         return VerificationRequest::where('user_id','=', $id)->count();
     }
 
+    /**
+     * Upload a file contents to a path provided
+     * @param $path
+     * @param $file
+     * @return mixed
+     */
     private function uploadFile($path, $file){
         return Storage::disk('public')->put($path,  File::get($file));
     }

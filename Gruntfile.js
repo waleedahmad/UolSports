@@ -7,6 +7,7 @@ module.exports = function(grunt) {
             dist: {
                 src: [
                     'resources/assets/js/*.js',
+                    'resources/assets/js/**/*.js'
                 ],
                 dest: 'public/js/app.js',
             }
@@ -47,7 +48,8 @@ module.exports = function(grunt) {
         watch: {
             scripts: {
                 files: [
-                    'resources/assets/js/*.js'
+                    'resources/assets/js/*.js',
+                    'resources/assets/js/**/*.js'
                 ],
                 tasks: ['concat', 'babel' ,'uglify']
             },

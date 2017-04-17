@@ -7,13 +7,18 @@ Route::group(['middleware'  =>  ['auth', 'isNotVerified', 'isAdmin']], function(
 
 Route::group(['middleware'  =>  ['auth', 'isNotVerified', 'isNotAdmin']], function(){
     Route::get('/admin', 'AdminController@index');
-    Route::get('/admin/players', 'AdminController@getPlayers');
-    Route::get('/admin/teams', 'AdminController@getTeams');
-    Route::get('/admin/trials', 'AdminController@getTrials');
-    Route::get('/admin/trial/requests', 'AdminController@getTrialRequests');
-    Route::get('/admin/events', 'AdminController@getEvents');
-    Route::get('/admin/matches', 'AdminController@getMatches');
 
+    // Admin /users routes
+    Route::get('/admin/users', 'AdminController@getUsers');
+    Route::post('/admin/approve/user', 'AdminController@approveUser');
+    Route::post('/admin/disapprove/user', 'AdminController@disapproveUser');
+
+    Route::get('/admin/sports', 'AdminController@getSports');
+    Route::get('/admin/players', 'AdminController@getPlayers');
+    Route::get('/admin/trial/requests', 'AdminController@getSportsJoinRequests');
+    Route::get('/admin/trials', 'AdminController@getTrials');
+    Route::get('/admin/teams', 'AdminController@getTeams');
+    Route::get('/admin/events', 'AdminController@getEvents');
 });
 
 Route::group(['middleware'  =>  ['auth', 'isVerified']], function(){
