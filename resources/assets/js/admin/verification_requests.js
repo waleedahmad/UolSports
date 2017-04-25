@@ -27,6 +27,7 @@ $('.approve-user').on('click', function(){
                         if(res.approved){
                             $(this).parents('.request').slideUp(function(){
                                $(this).remove();
+                               toastr.success('User approved');
                             });
                         }else{
                             bootbox.alert('Unable to approve user');
@@ -66,6 +67,7 @@ $('.disapprove-user').on('click', function(){
                         if(res.disapproved){
                             $(this).parents('.request').slideUp(function(){
                                 $(this).remove();
+                                toastr.success('User disapproved');
                             });
                         }else{
                             bootbox.alert('Unable to disapprove user');

@@ -1,2 +1,5 @@
 *
 !.gitignore
+!default/
+!default/img/
+!default/img/*

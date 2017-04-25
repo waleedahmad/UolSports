@@ -26,4 +26,21 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function getTeamIds(){
+        return Players::where('user_id','=', $this->id)->get()->pluck('team_id')->toArray();
+    }
+
+    public function getSportIds(){
+        return Teams::whereIn('id', $this->getTeamIds())->get()->pluck('sports_id')->toArray();
+    }
+
+    public function getParticipatingSports(){
+        return Sports::whereIn('id', $this->getSportIds())->get();
+    }
+
+    public function getOtherSports(){
+        return Sports::whereNotIn('id', $this->getParticipatingSports())
+		->where('enabled','=', true)->get();
+    }
 }

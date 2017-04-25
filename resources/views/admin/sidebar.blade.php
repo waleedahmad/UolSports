@@ -24,7 +24,7 @@
 
         <li @if(Request::path() === 'admin/trial/requests') class="active" @endif>
             <a href="/admin/trial/requests">
-                Join Requests
+                Trial Requests
             </a>
         </li>
 

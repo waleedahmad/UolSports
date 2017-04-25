@@ -12,6 +12,15 @@
             <div class="page-header">
                 <h3>Sports</h3>
             </div>
+
+            <div class="sports">
+                @foreach($sports as $sport)
+                    <div class="form-group">
+                        <input type="checkbox" class="sport-checkbox" value="{{$sport->name}}" @if($sport->enabled) checked @endif>
+                        <span>{{$sport->name}}</span>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 @endsection

@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "bootbox.js": "bootbox#^4.4.0"
+    "bootbox.js": "bootbox#^4.4.0",
+    "toastr": "^2.1.3"
   }
 }

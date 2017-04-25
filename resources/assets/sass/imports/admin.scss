@@ -32,12 +32,12 @@
         }
 
         :hover{
-          background-color: #DB5461;
+          background-color: $red;
           color:black;
         }
 
         &.active{
-          background-color: #DB5461;
+          background-color: $red;
           color:white;
         }
       }
@@ -53,23 +53,37 @@
       margin: 0px;
     }
 
-    .requests{
+    .requests table,
+    .users table{
+      .image-holder{
+        width: 50px;
+        height: 50px;
+        overflow:hidden;
+        img{
+          width: 100%;
+        }
+      }
+    }
 
+    .requests{
       .request{
         .btn{
           width: 100px;
 
         }
       }
+    }
 
-      table{
-        .image-holder{
-          width: 75px;
-          height: 75px;
-          overflow:hidden;
-          img{
-            width: 100%;
-          }
+    .sports{
+      .form-group{
+        input[type=checkbox] {
+          height: 20px;
+          width: 20px;
+          margin-right: 10px;
+        }
+
+        input[type=checkbox], span{
+          vertical-align: middle;
         }
       }
     }

@@ -1,0 +1,103 @@
+.main{
+  padding-top: 50px;
+  height: 100%;
+  overflow: auto;
+
+  .sidebar{
+
+    height: 100%;
+    overflow:auto;
+    background-color: white;
+
+    .user-box{
+      display: block;
+      overflow :auto;
+      .col-xs-3, .col-xs-9{
+        padding: 0px;
+      }
+
+      margin-top: 20px;
+      .image-holder{
+        height: 50px;
+        width: 50px;
+        overflow: hidden;
+        img{
+          width: 100%;
+        }
+      }
+    }
+
+    .navigator{
+      .link{
+        height: 35px;
+        width: 100%;
+        display: block;
+        padding-top: 5px;
+        padding-bottom : 5px;
+        font-size: 16px;
+        color: #545454;
+
+
+        &:hover, &.active{
+          padding-left: 5px;
+          text-decoration: none;
+          color: white;
+          background-color : $red;
+        }
+      }
+    }
+
+    .title-divider{
+      font-size: 16px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #F1EDEE;
+      padding-bottom: 5px;
+      color:grey;
+      clear:both;
+    }
+
+    .sports{
+
+      .sport{
+        height: 40px;
+        text-decoration: none;
+        display: block;
+        color: #545454;
+        font-size: 16px;
+        padding: 5px;
+
+        &:hover{
+          color: $red;
+        }
+
+        .request-trial, .waiting-approval{
+          cursor: pointer;
+          padding: 5px;
+          font-size: 12px;
+          color:grey;
+          border: 1px solid $red;
+          display: none;
+
+          &:hover{
+            background-color: $red;
+            color:white;
+          }
+        }
+
+        &:hover{
+          .request-trial, .waiting-approval{
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+  .content{
+    padding-top: 20px;
+    height: 100%;
+    overflow:hidden;
+  }
+}
+
