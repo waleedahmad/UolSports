@@ -141,6 +141,24 @@ class AdminController extends Controller
         return view('admin.trial_requests')->with('trial_requests', $trial_requests);
     }
 
+    public function getJoinRequestInfo(Request $request){
+        $id = $request->id;
+
+        $trial_request = TrialRequests::find($id);
+
+        return response()->json($trial_request);
+    }
+
+    public function deleteJoinRequest(Request $request){
+        $id = $request->id;
+
+        $trial_request = TrialRequests::find($id);
+
+        if($trial_request->delete()){
+            return response()->json(true);
+        }
+    }
+
     public function getTrials()
     {
         return view('admin.trials');

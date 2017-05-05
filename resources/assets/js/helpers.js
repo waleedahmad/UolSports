@@ -5,3 +5,9 @@ function getDOMAttribute(selector, attribute){
 function getCsrfToken(){
     return $("meta[name=token]").attr('content');
 }
+
+function registerModalCloseHanlder(){
+    $('.overlay-model').on('hidden.bs.modal', function(){
+        $(this).remove();
+    });
+}

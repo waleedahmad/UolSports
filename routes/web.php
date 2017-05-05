@@ -22,6 +22,8 @@ Route::group(['middleware'  =>  ['auth', 'isNotVerified', 'isNotAdmin']], functi
 
     Route::get('/admin/players', 'AdminController@getPlayers');
     Route::get('/admin/trial/requests', 'AdminController@getSportsJoinRequests');
+    Route::get('/admin/trial/request', 'AdminController@getJoinRequestInfo');
+    Route::delete('/admin/trial/request', 'AdminController@deleteJoinRequest');
     Route::get('/admin/trials', 'AdminController@getTrials');
     Route::get('/admin/teams', 'AdminController@getTeams');
     Route::get('/admin/events', 'AdminController@getEvents');

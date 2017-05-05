@@ -33,6 +33,8 @@ function requestTrial(e){
                         }
                     }.bind(this)
                 });
+            }else{
+                $(this).on('click', requestTrial);
             }
         }.bind(this)
     });

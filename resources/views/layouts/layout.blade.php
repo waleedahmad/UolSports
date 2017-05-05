@@ -15,10 +15,16 @@
     @include('layouts.navbar')
     @yield('content')
 
+    <div id="modal">
+
+    </div>
+
     <script src="/lib/jquery/dist/jquery.min.js"></script>
     <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/lib/bootbox.js/bootbox.js"></script>
     <script src="/lib/toastr/toastr.min.js"></script>
+    <script src="/lib/mustache.js/mustache.min.js"></script>
+    <script src="/lib/jt.timepicker/jquery.timepicker.min.js"></script>
     <script src="/js/app.js"></script>
 </body>
 </html>
