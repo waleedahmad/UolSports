@@ -11,3 +11,13 @@ function registerModalCloseHanlder(){
         $(this).remove();
     });
 }
+
+function renderModal(rendered){
+    $('#modal').html(rendered);
+    $('.overlay-model').modal('show');
+    registerModalCloseHanlder();
+}
+
+function closeModal(){
+    $('.overlay-model').modal('hide');
+}

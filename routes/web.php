@@ -13,6 +13,7 @@ Route::group(['middleware'  =>  ['auth', 'isNotVerified', 'isNotAdmin']], functi
 
     // Admin /users routes
     Route::get('/admin/users', 'AdminController@getUsers');
+    Route::delete('/admin/users', 'AdminController@deleteUser');
     Route::post('/admin/approve/user', 'AdminController@approveUser');
     Route::post('/admin/disapprove/user', 'AdminController@disapproveUser');
 
@@ -20,12 +21,27 @@ Route::group(['middleware'  =>  ['auth', 'isNotVerified', 'isNotAdmin']], functi
     Route::post('/admin/sports/enable', 'AdminController@enableSport');
     Route::post('/admin/sports/disable', 'AdminController@disableSport');
 
-    Route::get('/admin/players', 'AdminController@getPlayers');
+
     Route::get('/admin/trial/requests', 'AdminController@getSportsJoinRequests');
-    Route::get('/admin/trial/request', 'AdminController@getJoinRequestInfo');
-    Route::delete('/admin/trial/request', 'AdminController@deleteJoinRequest');
+    Route::get('/admin/trial', 'AdminController@getTrialInfo');
+    Route::post('/admin/trial', 'AdminController@processTrialRequest');
+    Route::delete('/admin/trial', 'AdminController@deleteTrial');
+
+
     Route::get('/admin/trials', 'AdminController@getTrials');
+    Route::get('/admin/trials/reject', 'AdminController@rejectPlayer');
+
+    Route::post('/admin/players/assign', 'AdminController@assignTeamToPlayer');
+    Route::delete('/admin/players/remove', 'AdminController@removePlayerFromTeam');
+
     Route::get('/admin/teams', 'AdminController@getTeams');
+    Route::get('/admin/teams/edit/{id}','AdminController@editTeam');
+    Route::post('/admin/teams/update','AdminController@updateTeam');
+    Route::get('/admin/team', 'AdminController@getTeamPlayers');
+    Route::delete('/admin/team', 'AdminController@deleteTeam');
+    Route::get('/admin/teams/add', 'AdminController@addTeams');
+    Route::post('/admin/teams/add', 'AdminController@createTeams');
+
     Route::get('/admin/events', 'AdminController@getEvents');
 });
 

@@ -71,7 +71,7 @@
           color: $red;
         }
 
-        .request-trial, .waiting-approval{
+        .request-trial, .waiting-approval, .await-trial {
           cursor: pointer;
           padding: 5px;
           font-size: 12px;
@@ -86,7 +86,7 @@
         }
 
         &:hover{
-          .request-trial, .waiting-approval{
+          .request-trial, .waiting-approval, .await-trial{
             display: block;
           }
         }

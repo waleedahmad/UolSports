@@ -16,9 +16,9 @@
             </a>
         </li>
 
-        <li @if(Request::path() === 'admin/players') class="active" @endif>
-            <a href="/admin/players">
-                Players
+        <li @if(Request::path() === 'admin/teams') class="active" @endif>
+            <a href="/admin/teams">
+                Teams
             </a>
         </li>
 
@@ -31,12 +31,6 @@
         <li @if(Request::path() === 'admin/trials') class="active" @endif>
             <a href="/admin/trials">
                 Trials
-            </a>
-        </li>
-
-        <li @if(Request::path() === 'admin/teams') class="active" @endif>
-            <a href="/admin/teams">
-                Teams
             </a>
         </li>
 

@@ -49,12 +49,34 @@
     padding-left: 14px;
     height: 500px;
 
+    a{
+      text-decoration : none;
+    }
+
     .page-header{
+      display: block;
+      height: auto;
+      overflow: auto;
       margin: 0px;
+
+      h3, button{
+        display: inline-block;
+        float:left;
+      }
+
+      button{
+        margin-top: 25px;
+      }
+    }
+
+    .col-xs-8{
+      padding: 0px;
     }
 
     .requests table,
-    .users table{
+    .users table,
+    .trial-requests table,
+    .trials table{
       .image-holder{
         width: 50px;
         height: 50px;
@@ -65,13 +87,9 @@
       }
     }
 
-    .requests{
-      .request{
-        .btn{
-          width: 100px;
-
-        }
-      }
+    .requests .request .btn,
+    .teams .team .btn{
+      width: 100px;
     }
 
     .sports{

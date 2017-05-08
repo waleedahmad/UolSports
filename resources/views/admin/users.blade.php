@@ -40,7 +40,7 @@
 
                         <tbody>
                         @foreach($users as $user)
-                            <tr class="request">
+                            <tr class="user">
                                 <td>
                                     <a target="_blank" href="/storage/{{$user->image_uri}}">
                                         <div class="image-holder">

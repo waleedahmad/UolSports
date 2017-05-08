@@ -41,8 +41,15 @@ function requestTrial(e){
 }
 
 $('.waiting-approval').on('click', waitingApproval);
+$('.await-trial').on('click', awaitTrial);
+
 
 function waitingApproval(e){
     let sport_name = $(this).attr('data-name');
     bootbox.alert(`Your request for sport ${sport_name} is pending, please wait for approval.`);
+}
+
+function awaitTrial(){
+    let sport_name = $(this).attr('data-name');
+    bootbox.alert(`Your Trial request for ${sport_name} has been accepted, please visit trial requests page for viewing trial timings `);
 }

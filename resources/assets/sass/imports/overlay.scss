@@ -1,0 +1,100 @@
+.overlay-model{
+
+  h3{
+    margin: 0px;
+  }
+
+  .modal-header{
+    .col-xs-11{
+      padding: 0px;
+    }
+
+    .user-info{
+
+      display: block;
+      height : auto;
+      overflow: auto;
+
+      .image-holder{
+        width: 50px;
+        height: 50px;
+        img{
+          width : 100%;
+        }
+      }
+
+      .name{
+        margin: 5px;
+      }
+    }
+  }
+
+  .modal-body{
+    display: block;
+    height : auto;
+    overflow: auto;
+
+    .schedule{
+      .col-xs-6{
+        padding: 0px;
+        margin-top: 20px;
+      }
+
+      .timings{
+        #schedule-date,
+        #schedule-time{
+          margin-top: 20px;
+          width: 240px;
+        }
+      }
+    }
+
+    .assign-team{
+      .col-xs-6{
+        padding: 0px;
+        margin-top: 20px;
+
+        #team{
+          margin-top: 20px;
+        }
+      }
+    }
+
+    .players-list{
+      table{
+        .image-holder{
+          width: 50px;
+          height: 50px;
+          overflow:hidden;
+          img{
+            width: 100%;
+          }
+        }
+
+        tr{
+
+          td{
+            width : 25%;
+          }
+          .remove-player{
+            display: none;
+          }
+
+          &:hover{
+            .remove-player{
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+  .modal-footer{
+    .error{
+      text-align:left;
+      color:red;
+    }
+  }
+}

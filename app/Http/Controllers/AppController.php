@@ -20,6 +20,6 @@ class AppController extends Controller
             'your_sports', Auth::user()->getParticipatingSports()
         )->with(
             'other_sports' , Auth::user()->getOtherSports()
-        );;
+        );
     }
 }

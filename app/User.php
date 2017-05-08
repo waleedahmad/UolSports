@@ -40,7 +40,7 @@ class User extends Authenticatable
     }
 
     public function getOtherSports(){
-        return Sports::whereNotIn('id', $this->getParticipatingSports())
-		->where('enabled','=', true)->get();
+        return Sports::whereNotIn('id', $this->getSportIds())
+		        ->where('enabled','=', true)->get();
     }
 }

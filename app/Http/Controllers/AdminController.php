@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Players;
+use App\Teams;
+use Validator;
 use App\Sports;
 use App\TrialRequests;
+use App\Trials;
 use App\User;
 use App\VerificationRequest;
 use Illuminate\Http\Request;
@@ -78,6 +82,32 @@ class AdminController extends Controller
         return view('admin.users')->with('users', $users);
     }
 
+    public function deleteUser(Request $request){
+        $user = User::find($request->id);
+
+        if(!$this->userImageUriIsDefault($user->image_uri)){
+            if($this->removeFile($user->card_uri) && $this->removeFile($user->image_uri)){
+                if($user->delete()){
+                    return response()->json(true);
+                }
+            }
+        }else{
+            if($this->removeFile($user->card_uri)){
+                if($user->delete()){
+                    return response()->json(true);
+                }
+            }
+        }
+    }
+
+    public function userImageUriIsDefault($image_uri){
+        return ($image_uri === 'default/img/default_img_male.jpg' || $image_uri === 'default/img/default_img_female.jpg');
+    }
+
+    public function removeFile($uri){
+        return Storage::disk('public')->delete($uri);
+    }
+
     public function getSports()
     {
         $sports = Sports::all();
@@ -130,43 +160,191 @@ class AdminController extends Controller
         ]);
     }
 
-    public function getPlayers()
-    {
-        return view('admin.players');
-    }
-
+    /**
+     * Show sport join requests
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getSportsJoinRequests()
     {
         $trial_requests = TrialRequests::all();
         return view('admin.trial_requests')->with('trial_requests', $trial_requests);
     }
 
-    public function getJoinRequestInfo(Request $request){
+    /**
+     * Get sport join request info
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTrialInfo(Request $request){
         $id = $request->id;
 
-        $trial_request = TrialRequests::find($id);
-
-        return response()->json($trial_request);
+        if($request->planned === 'true'){
+            $trial = Trials::with('sport')->with('user')->find($id);
+            $teams = Teams::where('sports_id','=', $trial->sports_id)->get();
+            return response()->json([
+                'trial' =>  $trial,
+                'teams' =>  $teams
+            ]);
+        }else{
+            $trial_request = TrialRequests::with('sport')->with('user')->find($id);
+            return response()->json($trial_request);
+        }
     }
 
-    public function deleteJoinRequest(Request $request){
+    /**
+     * Delete sport join request
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteTrial(Request $request){
+        if($request->planned === 'true'){
+            $id = $request->id;
+
+            $trial = Trials::find($id);
+
+            if($trial->delete()){
+                return response()->json(true);
+            }
+        }else{
+            $id = $request->id;
+
+            $trial_request = TrialRequests::find($id);
+
+            if($trial_request->delete()){
+                return response()->json(true);
+            }
+        }
+    }
+
+    public function processTrialRequest(Request $request){
         $id = $request->id;
+        $timestamp = $request->timestamp;
 
         $trial_request = TrialRequests::find($id);
+        $trial = new Trials();
+        $trial->user_id = $trial_request->user_id;
+        $trial->sports_id = $trial_request->sports_id;
+        $trial->trial_timing = $timestamp;
 
-        if($trial_request->delete()){
-            return response()->json(true);
+        if($trial->save()){
+            if($trial_request->delete()){
+                return response()->json(true);
+            }
         }
+        return response()->json(false);
     }
 
     public function getTrials()
     {
-        return view('admin.trials');
+        $trials = Trials::all();
+        return view('admin.trials')->with('trials', $trials);
+    }
+
+    public function assignTeamToPlayer(Request $request){
+        $team_id = $request->team_id;
+        $trial_id = $request->trial_id;
+
+        $trial = Trials::find($trial_id);
+
+        $player = new Players();
+        $player->user_id = $trial->user_id;
+        $player->team_id = $team_id;
+
+        if($player->save()){
+            if($trial->delete()){
+                return response()->json(true);
+            }
+        }
+    }
+
+    public function removePlayerFromTeam(Request $request){
+        $player = Players::find($request->id);
+        if($player->delete()){
+            return response()->json(true);
+        }
     }
 
     public function getTeams()
     {
-        return view('admin.teams');
+        $teams = Teams::all();
+        return view('admin.teams')->with('teams', $teams);
+    }
+
+    public function addTeams(){
+        $sports = Sports::all();
+        return view('admin.add_teams')->with('sports', $sports);
+    }
+
+    public function createTeams(Request $request){
+        $validator = Validator::make($request->all(), [
+            'team_name' =>  'required',
+            'sports_id' =>  'required',
+            'department_name'   =>  'required'
+        ]);
+
+        if($validator->passes()){
+            if(!$this->teamExist($request->sports_id, $request->team_name, $request->department_name)){
+                if($this->createTeam($request->sports_id, $request->team_name, $request->department_name)){
+                    return redirect('/admin/teams');
+                }
+            }else{
+                $request->session()->flash('message', 'Team already exist');
+                return redirect('/admin/teams/add');
+            }
+        }else{
+            return redirect('/admin/teams/add')->withErrors($validator);
+        }
+    }
+
+    public function createTeam($sport_id, $name, $dept){
+        $team = new Teams();
+        $team->name = $name;
+        $team->sports_id = $sport_id;
+        $team->department = $dept;
+        if($team->save()){
+            return true;
+        }
+    }
+
+    protected function teamExist($sport_id, $name, $dept){
+        return Teams::where('name','=', $name)->where('sports_id','=', $sport_id)->where('department', '=', $dept)->count();
+    }
+
+    public function editTeam($id){
+        $sports = Sports::all();
+        $team = Teams::find($id);
+        return view('admin.edit_team')->with('team', $team)->with('sports', $sports);
+    }
+
+    public function updateTeam(Request $request){
+        $id = $request->id;
+        $validator = Validator::make($request->all(), [
+            'team_name' =>  'required',
+        ]);
+
+        if($validator->passes()){
+            $team = Teams::find($id);
+            $team->name = $request->team_name;
+            if($team->save()){
+                return redirect('/admin/teams');
+            }
+        }else{
+            return redirect('/admin/teams/edit/'.$id)->withErrors($validator);
+        }
+    }
+
+    public function getTeamPlayers(Request $request){
+        $team = Teams::with('players.user')->with('sport')->find($request->id)->toArray();
+
+        return response()->json($team);
+    }
+
+    public function deleteTeam(Request $request){
+        $team = Teams::find($request->id);
+
+        if($team->delete()){
+            return response()->json(true);
+        }
     }
 
     public function getEvents()

@@ -13,4 +13,9 @@ class Sports extends Model
         return TrialRequests::where('user_id', '=', Auth::user()->id)
                     ->where('sports_id','=', $this->id)->count();
     }
+
+    public function awaitTrial(){
+        return Trials::where('user_id', '=', Auth::user()->id)
+            ->where('sports_id','=', $this->id)->count();
+    }
 }

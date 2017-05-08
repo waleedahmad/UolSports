@@ -37,7 +37,11 @@
 
     <div class="sports">
         @if($your_sports->count())
-            {{$your_sports}}
+            @foreach($your_sports as $sport)
+                <div class="sport">
+                    {{$sport->name}}
+                </div>
+            @endforeach
         @else
             You're not participating in any sports.
         @endif
@@ -53,13 +57,22 @@
                 <div class="sport">
                     {{$sport->name}}
 
-                    <span class="@if($sport->requestPending()) waiting-approval @else request-trial @endif pull-right" data-id="{{$sport->id}}" data-name="{{$sport->name}}">
-                                @if($sport->requestPending())
-                            Waiting approval
-                        @else
-                            Request Trial
-                        @endif
-                            </span>
+                    <span class="@if($sport->requestPending() || $sport->awaitTrial()) @if($sport->requestPending()) waiting-approval @else await-trial @endif
+                                @else
+                                    request-trial
+                                @endif
+                                pull-right" data-id="{{$sport->id}}" data-name="{{$sport->name}}">
+
+                                @if($sport->requestPending() || $sport->awaitTrial())
+                                    @if($sport->requestPending())
+                                        Waiting Approval
+                                    @else
+                                        Awaiting Trial
+                                    @endif
+                                @else
+                                    Request Trial
+                                @endif
+                    </span>
                 </div>
             @endforeach
         @else

@@ -9,6 +9,8 @@
     @yield('title')
     <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/lib/toastr/toastr.min.css">
+    <link rel="stylesheet" href="/lib/jquery-ui/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/lib/jt.timepicker/jquery.timepicker.css">
     <link rel="stylesheet" href="/css/app.min.css">
 </head>
 <body>
@@ -24,7 +26,9 @@
     <script src="/lib/bootbox.js/bootbox.js"></script>
     <script src="/lib/toastr/toastr.min.js"></script>
     <script src="/lib/mustache.js/mustache.min.js"></script>
+    <script src="/lib/jquery-ui/jquery-ui.min.js"></script>
     <script src="/lib/jt.timepicker/jquery.timepicker.min.js"></script>
+    <script src="/lib/moment/moment.js"></script>
     <script src="/js/app.js"></script>
 </body>
 </html>
