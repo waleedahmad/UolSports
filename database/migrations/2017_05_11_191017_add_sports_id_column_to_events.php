@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTeamsTable extends Migration
+class AddSportsIdColumnToEvents extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateTeamsTable extends Migration
      */
     public function up()
     {
-        Schema::create('teams', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('department');
-            $table->integer('sports_id')->unsigned();
+        Schema::table('events', function (Blueprint $table) {
+            $table->integer('sports_id')->unsigned()->after('event_time');
             $table->foreign('sports_id')->references('id')->on('sports')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
@@ -30,6 +26,8 @@ class CreateTeamsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('teams');
+        Schema::table('events', function (Blueprint $table) {
+            //
+        });
     }
 }

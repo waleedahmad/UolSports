@@ -77,7 +77,7 @@ class AuthController extends Controller
         $user->password = bcrypt($input->password);
         $user->registration_id = '';
         $user->verified = 0;
-        $user->image_uri = 'default/img/default_img_male.jpg';
+        $user->image_uri = ($input->gender === 'male') ? 'default/img/default_img_male.jpg' : 'default/img/default_img_female.jpg';
         $user->card_uri = '';
         $user->gender = $input->gender;
         $user->type = 'user';

@@ -105,5 +105,17 @@
         }
       }
     }
+
+    .add-event{
+      #event-date,
+      #event-time{
+        width: 240px;
+      }
+
+      #event-errors{
+        color:red;
+        display: none;
+      }
+    }
   }
 }

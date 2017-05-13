@@ -74,11 +74,11 @@
 
 
                     @if(Session::has('message'))
-                    <div class="form-group">
-                        <div class="alert alert-info">
-                            {{Session::get('message')}}
+                        <div class="form-group">
+                            <div class="alert alert-info">
+                                {{Session::get('message')}}
+                            </div>
                         </div>
-                    </div>
                     @endif
 
 

@@ -20,6 +20,7 @@ Route::group(['middleware'  =>  ['auth', 'isNotVerified', 'isNotAdmin']], functi
     Route::get('/admin/sports', 'AdminController@getSports');
     Route::post('/admin/sports/enable', 'AdminController@enableSport');
     Route::post('/admin/sports/disable', 'AdminController@disableSport');
+    Route::get('/admin/sports/teams', 'AdminController@getSportTeams');
 
 
     Route::get('/admin/trial/requests', 'AdminController@getSportsJoinRequests');
@@ -43,6 +44,15 @@ Route::group(['middleware'  =>  ['auth', 'isNotVerified', 'isNotAdmin']], functi
     Route::post('/admin/teams/add', 'AdminController@createTeams');
 
     Route::get('/admin/events', 'AdminController@getEvents');
+    Route::get('/admin/events/create', 'AdminController@getEventForm');
+    Route::get('/admin/events', 'AdminController@getEvents');
+
+    Route::get('/admin/events/{id}/edit', 'AdminController@editEvent');
+    Route::get('/admin/events/{id}/results', 'AdminController@getEventResults');
+
+    Route::post('/admin/event', 'AdminController@createEvent');
+    Route::delete('/admin/event', 'AdminController@deleteEvent');
+    Route::put('/admin/event', 'AdminController@updateEvent');
 });
 
 Route::group(['middleware'  =>  ['auth', 'isVerified']], function(){

@@ -18,8 +18,8 @@ class CreateTrialsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('sports_id')->unsigned();
             $table->timestamp('trial_timing');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('sports_id')->references('id')->on('sports');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('sports_id')->references('id')->on('sports')->onDelete('cascade');
             $table->timestamps();
         });
     }

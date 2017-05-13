@@ -18,7 +18,7 @@ class CreateVerificationTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('registration_id');
             $table->string('card_uri');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

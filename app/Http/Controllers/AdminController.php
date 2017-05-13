@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events;
 use App\Players;
 use App\Teams;
+use Illuminate\Support\Facades\Event;
 use Validator;
 use App\Sports;
 use App\TrialRequests;
@@ -76,12 +78,21 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * Get users
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getUsers()
     {
         $users = User::where('type', '!=', 'admin')->paginate(10);
         return view('admin.users')->with('users', $users);
     }
 
+    /**
+     * Delete user
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteUser(Request $request){
         $user = User::find($request->id);
 
@@ -100,14 +111,28 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * Check if user image is default
+     * @param $image_uri
+     * @return bool
+     */
     public function userImageUriIsDefault($image_uri){
         return ($image_uri === 'default/img/default_img_male.jpg' || $image_uri === 'default/img/default_img_female.jpg');
     }
 
+    /**
+     * Remove file from storage
+     * @param $uri
+     * @return mixed
+     */
     public function removeFile($uri){
         return Storage::disk('public')->delete($uri);
     }
 
+    /**
+     * Get sports
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getSports()
     {
         $sports = Sports::all();
@@ -216,6 +241,11 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * Process trial request
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function processTrialRequest(Request $request){
         $id = $request->id;
         $timestamp = $request->timestamp;
@@ -234,12 +264,21 @@ class AdminController extends Controller
         return response()->json(false);
     }
 
+    /**
+     * Get trials
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getTrials()
     {
         $trials = Trials::all();
         return view('admin.trials')->with('trials', $trials);
     }
 
+    /**
+     * Assign team to player
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function assignTeamToPlayer(Request $request){
         $team_id = $request->team_id;
         $trial_id = $request->trial_id;
@@ -257,6 +296,11 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * Remove player from team
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function removePlayerFromTeam(Request $request){
         $player = Players::find($request->id);
         if($player->delete()){
@@ -264,17 +308,30 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * Get teams
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getTeams()
     {
         $teams = Teams::all();
         return view('admin.teams')->with('teams', $teams);
     }
 
+    /**
+     * Add a new team
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function addTeams(){
         $sports = Sports::all();
         return view('admin.add_teams')->with('sports', $sports);
     }
 
+    /**
+     * Create a new team
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function createTeams(Request $request){
         $validator = Validator::make($request->all(), [
             'team_name' =>  'required',
@@ -296,6 +353,14 @@ class AdminController extends Controller
         }
     }
 
+
+    /**
+     * Create a team
+     * @param $sport_id
+     * @param $name
+     * @param $dept
+     * @return bool
+     */
     public function createTeam($sport_id, $name, $dept){
         $team = new Teams();
         $team->name = $name;
@@ -306,16 +371,33 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * Check if team already exist
+     * @param $sport_id
+     * @param $name
+     * @param $dept
+     * @return mixed
+     */
     protected function teamExist($sport_id, $name, $dept){
         return Teams::where('name','=', $name)->where('sports_id','=', $sport_id)->where('department', '=', $dept)->count();
     }
 
+    /**
+     * Get edit team form
+     * @param $id
+     * @return \Illuminate\View\View
+     */
     public function editTeam($id){
         $sports = Sports::all();
         $team = Teams::find($id);
         return view('admin.edit_team')->with('team', $team)->with('sports', $sports);
     }
 
+    /**
+     * Update team
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function updateTeam(Request $request){
         $id = $request->id;
         $validator = Validator::make($request->all(), [
@@ -333,12 +415,22 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * Get team players
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getTeamPlayers(Request $request){
         $team = Teams::with('players.user')->with('sport')->find($request->id)->toArray();
 
         return response()->json($team);
     }
 
+    /**
+     * Delete a team
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteTeam(Request $request){
         $team = Teams::find($request->id);
 
@@ -347,13 +439,99 @@ class AdminController extends Controller
         }
     }
 
-    public function getEvents()
-    {
-        return view('admin.events');
+    /**
+     * Get sport teams
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getSportTeams(Request $request){
+        $teams = Teams::where('sports_id','=', $request->sport_id)->get();
+        return response()->json($teams);
     }
 
-    public function getFileNameFromPath($path)
+    /**
+     * Get events
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getEvents()
     {
-        return basename($path);
+        $events = Events::all();
+        return view('admin.events')->with('events', $events);
+    }
+
+    /**
+     * Get add event form
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getEventForm(){
+        $sports = Sports::all();
+        return view('admin.add_event')->with('sports', $sports);
+    }
+
+    /**
+     * Create event
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function createEvent(Request $request){
+        $event = new Events();
+        $event->sports_id = $request->event_sport;
+        $event->team_1 = $request->team_one;
+        $event->team_2 = $request->team_two;
+        $event->event_time = $request->event_date . ' ' . date('H:i:s', strtotime($request->event_time));
+
+        if($event->save()){
+            $request->session()->flash('message', 'Event created');
+            return redirect('/admin/events');
+        }
+    }
+
+    /**
+     * Delete event
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteEvent(Request $request){
+        $event = Events::find($request->id);
+
+        if($event->delete()){
+            return response()->json(true);
+        }
+
+        return response()->json(false);
+    }
+
+    /**
+     * Edit event
+     * @param $id
+     * @return \Illuminate\View\View
+     */
+    public function editEvent($id){
+        $sports = Sports::all();
+        $event = Events::find($id);
+        $teams = Teams::where('sports_id','=', $event->sports_id)->get();
+        return view('admin.edit_event')->with('event', $event)->with('sports', $sports)->with('teams', $teams);
+    }
+
+    /**
+     * Update event
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function updateEvent(Request $request){
+        $event = Events::find($request->id);
+        $event->sports_id = $request->event_sport;
+        $event->team_1 = $request->team_one;
+        $event->team_2 = $request->team_two;
+        $event->event_time = $request->event_date . ' ' . date('H:i:s', strtotime($request->event_time));
+
+        if($event->save()){
+            return redirect('/admin/events');
+        }
+    }
+
+    public function getEventResults($id){
+        $event = Events::find($id);
+        return view('admin.event')->with('event', $event);
     }
 }
