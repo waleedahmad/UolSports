@@ -66,8 +66,8 @@
                                 </td>
 
                                 <td>
-                                    @if($event->result)
-                                        Announced
+                                    @if($event->results)
+                                        {{$event->results->winner->name}}
                                     @else
                                         N/A
                                     @endif

@@ -196,5 +196,25 @@ $('.delete-event').on('click', function(e){
     });
 });
 
+$('#winner-team').on('change', function(e){
+    let team_id = $(this).val(),
+        event_id = $(this).attr('data-event-id'),
+        method = (team_id.length) ? 'POST' : 'DELETE';
+    console.log(team_id, event_id, method);
+
+    $.ajax({
+        type : method,
+        url : '/admin/event/result',
+        data : {
+            event_id : event_id,
+            team_id : team_id,
+            _token : getCsrfToken()
+        },
+        success : function(res){
+            console.log(res);
+        }
+    });
+});
+
 
 

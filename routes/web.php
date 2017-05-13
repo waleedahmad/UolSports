@@ -47,8 +47,12 @@ Route::group(['middleware'  =>  ['auth', 'isNotVerified', 'isNotAdmin']], functi
     Route::get('/admin/events/create', 'AdminController@getEventForm');
     Route::get('/admin/events', 'AdminController@getEvents');
 
+    Route::post('/admin/event/result', 'AdminController@createOrUpdateEventResult');
+    Route::delete('/admin/event/result', 'AdminController@deleteEventResult');
+
     Route::get('/admin/events/{id}/edit', 'AdminController@editEvent');
     Route::get('/admin/events/{id}/results', 'AdminController@getEventResults');
+
 
     Route::post('/admin/event', 'AdminController@createEvent');
     Route::delete('/admin/event', 'AdminController@deleteEvent');

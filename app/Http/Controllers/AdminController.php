@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\EventResult;
 use App\Events;
 use App\Players;
 use App\Teams;
@@ -531,7 +532,52 @@ class AdminController extends Controller
     }
 
     public function getEventResults($id){
-        $event = Events::find($id);
+        $event = Events::with('results')->find($id);
         return view('admin.event')->with('event', $event);
     }
+
+    public function createOrUpdateEventResult(Request $request){
+        $team_id = $request->team_id;
+        $event_id = $request->event_id;
+
+        if($this->eventResultExist($event_id)){
+            if($this->updateEventResult($event_id, $team_id)){
+                return response()->json(true);
+            }
+        }else{
+            if($this->createEventResult($event_id, $team_id)){
+                return response()->json(true);
+            }
+        }
+
+        return response()->json(false);
+
+    }
+
+    public function eventResultExist($event_id){
+        return EventResult::where('event_id', '=', $event_id)->count();
+    }
+
+    public function updateEventResult($event_id, $team_id){
+        return EventResult::where('event_id', '=', $event_id)->update([
+            'winner_team'   =>  $team_id
+        ]);
+    }
+
+    public function createEventResult($event_id, $team_id){
+        $result = new EventResult();
+        $result->winner_team = $team_id;
+        $result->event_id = $event_id;
+        return $result->save();
+    }
+
+    public function deleteEventResult(Request $request){
+        $result = EventResult::where('event_id', '=', $request->event_id);
+
+        if($result->delete()){
+            return response()->json(true);
+        }
+    }
+
+
 }

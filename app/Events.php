@@ -10,6 +10,10 @@ class Events extends Model
 
     protected $dates = ['event_time'];
 
+    public function results(){
+        return $this->hasOne('App\EventResult', 'event_id', 'id');
+    }
+
     public function sport(){
         return $this->hasOne('App\Sports', 'id', 'sports_id');
     }
@@ -22,7 +26,5 @@ class Events extends Model
         return $this->hasOne('App\Teams', 'id', 'team_2');
     }
 
-    public function result(){
-        return $this->hasOne('App\EventResult', 'id', 'winner_team');
-    }
+
 }

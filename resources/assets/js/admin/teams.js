@@ -101,4 +101,4 @@ $('.delete-team').on('click', function(e){
 $('.cancel-team').on('click', function(e){
     e.preventDefault();
     window.location = $(this).attr('href');
-})
+});

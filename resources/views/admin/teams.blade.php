@@ -82,7 +82,7 @@
                     </table>
                 </div>
             @else
-                No users found.
+                No teams found.
             @endif
         </div>
     </div>
