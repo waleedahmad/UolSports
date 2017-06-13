@@ -98,6 +98,62 @@
     padding-top: 20px;
     height: 100%;
     overflow:hidden;
+
+    .page-header{
+      margin: 0px;
+
+      h3{
+        margin: 0px;
+      }
+    }
+
+    .events{
+      .event{
+        width: 400px;
+        padding: 10px;
+        background-color: #DB5461;
+        text-align:center;
+        margin-top: 20px;
+        color : white;
+
+        float:left;
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .profile{
+    .header{
+      display: block;
+      overflow: auto;
+      margin-bottom : 30px;
+      .image-holder{
+        height: 150px;
+        width: 150px;
+        overflow:hidden;
+        img{
+          width : 100%;
+        }
+      }
+
+      .name{
+        h2{
+          margin: 0px;
+        }
+
+        .reg-id{
+          margin-top: 10px;
+        }
+      }
+    }
+
+    .sports{
+      .sport{
+        font-size: 20px;
+      }
+    }
   }
 }
 

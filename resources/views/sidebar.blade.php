@@ -21,10 +21,6 @@
             Events
         </a>
 
-        <a href="/teams" class="link @if(Request::path() === 'teams') active @endif">
-            Teams
-        </a>
-
         <a href="/trials/requests" class="link @if(Request::path() === 'trials/requests') active @endif">
             Trial Requests
         </a>

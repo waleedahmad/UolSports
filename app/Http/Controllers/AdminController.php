@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\EventResult;
 use App\Events;
+use App\Mail\AccountApproved;
+use App\Mail\AccountDeleted;
+use App\Mail\AccountDisApproved;
 use App\Players;
 use App\Teams;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
 use Validator;
 use App\Sports;
 use App\TrialRequests;
@@ -46,16 +50,21 @@ class AdminController extends Controller
         ];
 
         $user_update = User::where('id', '=', $v_request->user_id)->update($options);
+        $user = $this->getUser($v_request->user_id);
 
-        if ($user_update) {
-            if ($v_request->delete()) {
-                if (Storage::disk('public')->move('requests/' . $old_file_path, 'id_card/' . $old_file_path)) {
-                    return response()->json([
-                        'approved' => true
-                    ]);
+        if($this->sendEmail($user, new AccountApproved($user))){
+            if ($user_update) {
+                if ($v_request->delete()) {
+                    if (Storage::disk('public')->move('requests/' . $old_file_path, 'id_card/' . $old_file_path)) {
+                        return response()->json([
+                            'approved' => true
+                        ]);
+                    }
                 }
             }
         }
+
+
         return response()->json([
             'approved' => false
         ]);
@@ -68,15 +77,19 @@ class AdminController extends Controller
     {
 
         $v_request = VerificationRequest::find($request->req_id);
-        $request_file_name = $this->getFileNameFromPath($v_request->card_uri);
 
-        if ($v_request->delete()) {
-            if (Storage::disk('public')->delete('requests/' . $request_file_name)) {
-                return response()->json([
-                    'disapproved' => true
-                ]);
+        $user = $this->getUser($v_request->user_id);
+
+        if($this->sendEmail($user, new AccountDisApproved($user))){
+            if ($v_request->delete()) {
+                if (Storage::disk('public')->delete($v_request->card_uri)) {
+                    return response()->json([
+                        'disapproved' => true
+                    ]);
+                }
             }
         }
+
     }
 
     /**
@@ -99,16 +112,21 @@ class AdminController extends Controller
 
         if(!$this->userImageUriIsDefault($user->image_uri)){
             if($this->removeFile($user->card_uri) && $this->removeFile($user->image_uri)){
-                if($user->delete()){
-                    return response()->json(true);
+                if($this->sendEmail($user, new AccountDeleted($user))){
+                    if($user->delete()){
+                        return response()->json(true);
+                    }
                 }
             }
         }else{
-            if($this->removeFile($user->card_uri)){
+
+            if($this->sendEmail($user, new AccountDeleted($user))){
+                $this->removeFile($user->card_uri);
                 if($user->delete()){
                     return response()->json(true);
                 }
             }
+
         }
     }
 
@@ -577,6 +595,24 @@ class AdminController extends Controller
         if($result->delete()){
             return response()->json(true);
         }
+    }
+
+    private function getFileNameFromPath($card_uri)
+    {
+        return basename($card_uri);
+    }
+
+    private function sendEmail($user, $mailable){
+        Mail::to($user)->send($mailable);
+
+        if(Mail::failures()){
+            return false;
+        }
+        return true;
+    }
+
+    public function getUser($id){
+        return User::find($id);
     }
 
 

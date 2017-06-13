@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Event;
 
 class User extends Authenticatable
 {
@@ -42,5 +43,9 @@ class User extends Authenticatable
     public function getOtherSports(){
         return Sports::whereNotIn('id', $this->getSportIds())
 		        ->where('enabled','=', true)->get();
+    }
+
+    public function events(){
+        return Events::whereIn('team_1', $this->getTeamIds())->orWhereIn('team_2', $this->getTeamIds())->get();
     }
 }

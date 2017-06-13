@@ -6,6 +6,9 @@ Route::group(['middleware'  =>  ['auth', 'isNotVerified', 'isAdmin']], function(
     Route::get('/trials/requests', 'AppController@getTrialRequests');
 
     Route::post('/sport/trial/request', 'SportsController@requestTrial');
+
+    Route::get('/profile/{id}', 'AppController@userProfile');
+
 });
 
 Route::group(['middleware'  =>  ['auth', 'isNotVerified', 'isNotAdmin']], function(){

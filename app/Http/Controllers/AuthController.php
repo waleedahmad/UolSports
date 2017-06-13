@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AccountRegistered;
 use App\User;
 use App\VerificationRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Validator;
 use Illuminate\Http\Request;
@@ -55,7 +57,11 @@ class AuthController extends Controller
 
         if($validator->passes()){
             if($this->createUser($request)){
-                $request->session()->flash('message', 'Registration Successful');
+                $user = $this->findUser($request->email);
+
+                if($this->sendEmail($user, new AccountRegistered($user))){
+                    $request->session()->flash('message', 'Registration Successful');
+                }
             }else{
                 $request->session()->flash('message', 'Unable to register');
             }
@@ -63,6 +69,19 @@ class AuthController extends Controller
         }else{
             return redirect('/register')->withErrors($validator)->withInput();
         }
+    }
+
+    public function findUser($email){
+        return User::where('email', '=', $email)->first();
+    }
+
+    private function sendEmail($user, $mailable){
+        Mail::to($user)->send($mailable);
+
+        if(Mail::failures()){
+            return false;
+        }
+        return true;
     }
 
     /**
